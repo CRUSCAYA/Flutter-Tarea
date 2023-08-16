@@ -1,0 +1,92 @@
+import 'package:flutter/material.dart';
+import 'dart:math';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Calculadora de Distancia entre Puntos',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  TextEditingController _controllerX1 = TextEditingController();
+  TextEditingController _controllerY1 = TextEditingController();
+  TextEditingController _controllerX2 = TextEditingController();
+  TextEditingController _controllerY2 = TextEditingController();
+
+  double _distancia = 0;
+
+  void _calcularDistancia() {
+    double x1 = double.tryParse(_controllerX1.text) ?? 0;
+    double y1 = double.tryParse(_controllerY1.text) ?? 0;
+    double x2 = double.tryParse(_controllerX2.text) ?? 0;
+    double y2 = double.tryParse(_controllerY2.text) ?? 0;
+
+    double diferenciaX = x2 - x1;
+    double diferenciaY = y2 - y1;
+    double distancia = sqrt(diferenciaX * diferenciaX + diferenciaY * diferenciaY);
+
+    setState(() {
+      _distancia = distancia;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Calculadora de Distancia entre Puntos'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            TextField(
+              controller: _controllerX1,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Coordenada X1'),
+            ),
+            TextField(
+              controller: _controllerY1,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Coordenada Y1'),
+            ),
+            TextField(
+              controller: _controllerX2,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Coordenada X2'),
+            ),
+            TextField(
+              controller: _controllerY2,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Coordenada Y2'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _calcularDistancia,
+              child: Text('Calcular Distancia'),
+            ),
+            SizedBox(height: 20),
+            Text('Distancia entre Puntos: $_distancia'),
+          ],
+        ),
+      ),
+    );
+  }
+}
