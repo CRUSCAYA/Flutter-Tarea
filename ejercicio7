@@ -1,0 +1,70 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Calculadora de Temperatura',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  TextEditingController _controllerCelsius = TextEditingController();
+  double _fahrenheit = 0;
+  double _kelvin = 0;
+
+  void _calcularTemperaturas() {
+    double celsius = double.tryParse(_controllerCelsius.text) ?? 0;
+    double fahrenheit = (celsius * 9 / 5) + 32;
+    double kelvin = celsius + 273.15;
+
+    setState(() {
+      _fahrenheit = fahrenheit;
+      _kelvin = kelvin;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Calculadora de Temperatura'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            TextField(
+              controller: _controllerCelsius,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Temperatura en Celsius'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _calcularTemperaturas,
+              child: Text('Calcular Temperaturas'),
+            ),
+            SizedBox(height: 20),
+            Text('Temperatura en Fahrenheit: $_fahrenheit'),
+            Text('Temperatura en Kelvin: $_kelvin'),
+          ],
+        ),
+      ),
+    );
+  }
+}
