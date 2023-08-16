@@ -1,0 +1,73 @@
+import 'package:flutter/material.dart';
+import 'dart:math';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Calculadora de Ángulo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  TextEditingController _controllerGradosSexagesimales = TextEditingController();
+
+  double _gradosCentesimales = 0;
+  double _radianes = 0;
+
+  void _calcularAngulos() {
+    double gradosSexagesimales = double.tryParse(_controllerGradosSexagesimales.text) ?? 0;
+
+    double gradosCentesimales = (gradosSexagesimales * 100) / 90;
+    double radianes = (gradosSexagesimales * pi) / 180;
+
+    setState(() {
+      _gradosCentesimales = gradosCentesimales;
+      _radianes = radianes;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Calculadora de Ángulo'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            TextField(
+              controller: _controllerGradosSexagesimales,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Grados Sexagesimales'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _calcularAngulos,
+              child: Text('Calcular Ángulos'),
+            ),
+            SizedBox(height: 20),
+            Text('Ángulo en Grados Centesimales: $_gradosCentesimales'),
+            Text('Ángulo en Radianes: $_radianes'),
+          ],
+        ),
+      ),
+    );
+  }
+}
