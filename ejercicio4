@@ -1,0 +1,84 @@
+import 'package:flutter/material.dart';
+import 'dart:math';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Calculadora de Área de Triángulo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  TextEditingController _controllerLado1 = TextEditingController();
+  TextEditingController _controllerLado2 = TextEditingController();
+  TextEditingController _controllerLado3 = TextEditingController();
+
+  double _area = 0;
+
+  void _calcularArea() {
+    double lado1 = double.tryParse(_controllerLado1.text) ?? 0;
+    double lado2 = double.tryParse(_controllerLado2.text) ?? 0;
+    double lado3 = double.tryParse(_controllerLado3.text) ?? 0;
+
+    double semiperimetro = (lado1 + lado2 + lado3) / 2;
+    double area = sqrt(semiperimetro * (semiperimetro - lado1) * (semiperimetro - lado2) * (semiperimetro - lado3));
+
+    setState(() {
+      _area = area;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Calculadora de Área de Triángulo'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            TextField(
+              controller: _controllerLado1,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Lado 1'),
+            ),
+            TextField(
+              controller: _controllerLado2,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Lado 2'),
+            ),
+            TextField(
+              controller: _controllerLado3,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Lado 3'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _calcularArea,
+              child: Text('Calcular Área'),
+            ),
+            SizedBox(height: 20),
+            Text('Área del Triángulo: $_area'),
+          ],
+        ),
+      ),
+    );
+  }
+}
