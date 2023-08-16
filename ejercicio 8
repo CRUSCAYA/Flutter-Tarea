@@ -1,0 +1,75 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Calculadora de Tiempo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  TextEditingController _controllerSegundos = TextEditingController();
+  int _horas = 0;
+  int _minutos = 0;
+  int _segundos = 0;
+
+  void _calcularTiempo() {
+    int segundosTotales = int.tryParse(_controllerSegundos.text) ?? 0;
+
+    int horas = segundosTotales ~/ 3600;
+    int minutos = (segundosTotales % 3600) ~/ 60;
+    int segundos = segundosTotales % 60;
+
+    setState(() {
+      _horas = horas;
+      _minutos = minutos;
+      _segundos = segundos;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Calculadora de Tiempo'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            TextField(
+              controller: _controllerSegundos,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Segundos'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _calcularTiempo,
+              child: Text('Calcular Tiempo'),
+            ),
+            SizedBox(height: 20),
+            Text('Horas: $_horas'),
+            Text('Minutos: $_minutos'),
+            Text('Segundos: $_segundos'),
+          ],
+        ),
+      ),
+    );
+  }
+}
